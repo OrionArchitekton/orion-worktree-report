@@ -1,0 +1,3 @@
+#!/bin/sh
+# Dedicated-environment launcher: -B applies before Python startup/imports.
+exec "${0%/*}/python" -B -m orion_worktree_report "$@"

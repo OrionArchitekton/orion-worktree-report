@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools==83.0.0", "wheel==0.46.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "orion-worktree-report"
+version = "0.1.0"
+description = "Explicit local Git worktree observations with honest coverage"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE", "NOTICE"]
+readme = "README.md"
+authors = [{name = "Dan Mercede"}]
+dependencies = []
+
+[tool.setuptools]
+script-files = ["scripts/orion-worktree-report"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,35 @@
+Orion Worktree Report
+
+The overlap and unordered-pair deduplication concepts acknowledge ECC by
+Affaan Mustafa: https://github.com/affaan-m/ECC
+Reference: v2.0.0, commit 8ad4151095e453301ce0e50374103bcd8f50ded2,
+ecc2/src/session/store.rs (list_file_overlaps) and
+ecc2/src/session/manager.rs (conflict_incident_key).
+
+The reporter uses registered Git worktrees and exact dirty-path bytes rather
+than ECC's session database. It replaces activity ranking, incident state and
+delimiter keys with a coverage report and domain-framed identifiers. This
+acknowledgment does not claim endorsement or an exact historical source pin.
+The upstream MIT notice is retained in full below.
+
+MIT License
+
+Copyright (c) 2026 Affaan Mustafa
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

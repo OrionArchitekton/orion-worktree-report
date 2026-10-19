@@ -1,0 +1,38 @@
+{
+  "status": "private-candidate-not-published",
+  "interface_version": 1,
+  "package_version": "0.1.0",
+  "tested_target": {
+    "implementation": "CPython",
+    "python": "3.11.9",
+    "git": "2.43.0",
+    "platform": "Linux x86_64, WSL2",
+    "filesystem": "local ext4"
+  },
+  "acceptance_seam": "Installed CLI against disposable real Git repositories; supplemental archive and contract tests",
+  "required_scenarios": [
+    "S1 explicit selection and coverage",
+    "S2 exact dirty-path overlap",
+    "S3 bounded failure and uncertainty",
+    "S4 reporting-only effects",
+    "S5 wheel and extracted-sdist installation"
+  ],
+  "artifact_hashes": "Bound outside the archives in the reviewed release packet and SHA256SUMS to avoid self-reference",
+  "limits": "No platform-wide, sandbox, merge-safety, atomic-snapshot, runtime-integration or public-availability claim",
+  "hosted_checks": "Prepared only; not run on a remote repository",
+  "observed_source_suite": {
+    "tests_passed": 69,
+    "exit": 0,
+    "scope": "Installed wheel built from reviewed source plus supplemental artifact/contract cases"
+  },
+  "native_effect_checks": [
+    "Byte and timestamp inventories",
+    "Cold interpreter startup",
+    "Clean-filter and fsmonitor refusal/control",
+    "Inherited Git redirection/tracing",
+    "Split-index refusal without timestamp refresh",
+    "Unknown mandatory index extension refusal",
+    "Main, linked and worktree-specific include targets never opened before refusal (native strace)",
+    "Only the reporter distribution in no-pip target; reviewed external installer versions recorded"
+  ]
+}
