@@ -1,5 +1,5 @@
 {
-  "status": "private-candidate-not-published",
+  "status": "release-candidate-not-published",
   "interface_version": 1,
   "package_version": "0.1.0",
   "tested_target": {
@@ -19,9 +19,9 @@
   ],
   "artifact_hashes": "Bound outside the archives in the reviewed release packet and SHA256SUMS to avoid self-reference",
   "limits": "No platform-wide, sandbox, merge-safety, atomic-snapshot, runtime-integration or public-availability claim",
-  "hosted_checks": "Prepared only; not run on a remote repository",
+  "hosted_checks": "See public PR #1 for the exact reviewed head and native required checks; local acceptance does not establish hosted availability.",
   "observed_source_suite": {
-    "tests_passed": 69,
+    "tests_passed": 91,
     "exit": 0,
     "scope": "Installed wheel built from reviewed source plus supplemental artifact/contract cases"
   },
@@ -33,6 +33,7 @@
     "Split-index refusal without timestamp refresh",
     "Unknown mandatory index extension refusal",
     "Main, linked and worktree-specific include targets never opened before refusal (native strace)",
-    "Only the reporter distribution in no-pip target; reviewed external installer versions recorded"
+    "Only the reporter distribution in no-pip target; reviewed external installer versions recorded",
+    "Assume-unchanged and skip-worktree refusal across SHA-1/SHA-256 and native index versions; intent-to-add remains observable"
   ]
 }

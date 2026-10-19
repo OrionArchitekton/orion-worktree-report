@@ -46,6 +46,17 @@ def test_final_output_limit_uses_small_unavailable_result(installed_cli,repo,git
     assert {e['code'] for e in r['problems']}=={'output_limit'}
 
 
+def test_text_output_limit_measures_the_rendered_format(installed_cli,repo,git_env):
+    import subprocess
+    for n in range(4096):(repo/(f'{n:04d}'+'x'*90)).touch()
+    p,r=invoke(installed_cli,[repo],env=git_env)
+    assert p.returncode==0 and len(p.stdout)<=1048576,r['problems']
+    assert len(r['worktrees'][0]['dirty_paths'])==4096
+    text=subprocess.run([str(installed_cli),'scan','--repo',str(repo)],env=git_env,capture_output=True,timeout=75)
+    assert text.returncode==4 and len(text.stdout)<16384
+    assert b'output_limit' in text.stdout and b'conclusion=indeterminate' in text.stdout
+
+
 def test_root_cap_is_before_dedup(installed_cli,repo,git_env):
     p,r=invoke(installed_cli,[repo]*9,env=git_env)
     assert p.returncode==2 and r['problems'][0]['code']=='invalid_invocation'
@@ -57,3 +68,14 @@ def test_registration_cap(installed_cli,repo,tmp_path,git_env):
     p,r=invoke(installed_cli,[repo],env=git_env)
     assert p.returncode==4 and r['problems'][0]['code']=='worktree_limit',r
     assert r['coverage']['registered_worktrees'] is None
+
+
+def test_large_clean_tracked_inventory_does_not_fill_command_output(installed_cli,repo,git_env):
+    from conftest import git
+    for n in range(8192):(repo/(f'{n:04d}'+'x'*230)).touch()
+    git(repo,'add','.',env=git_env)
+    git(repo,'commit','-m','large clean inventory',env=git_env)
+    assert len(git(repo,'ls-files','--stage','-z',env=git_env))>2*1024*1024
+    p,r=invoke(installed_cli,[repo],env=git_env)
+    assert p.returncode==0,r['problems']
+    assert r['coverage']['status']=='complete' and r['worktrees'][0]['dirty_paths']==[]

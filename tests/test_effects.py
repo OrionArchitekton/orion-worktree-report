@@ -136,11 +136,11 @@ def test_command_catalog_is_observation_only(installed_cli,repo,wrap_git,tmp_pat
             while pos < len(args) and args[pos]=='-c':pos+=2
             tail=args[pos:]
         seen.append(tail[0])
-        assert tail[0] in {'--version','rev-parse','symbolic-ref','config','worktree','ls-files','status'}
+        assert tail[0] in {'--version','rev-parse','symbolic-ref','config','worktree','status'}
         if tail[0]=='worktree':assert tail==['worktree','list','--porcelain','-z']
         if tail[0]=='config':assert '--no-includes' in tail and '--name-only' in tail
         if tail[0]=='status':assert '--porcelain=v2' in tail and '-z' in tail
-    assert {'--version','config','worktree','ls-files','status'}<=set(seen)
+    assert {'--version','config','worktree','status'}<=set(seen)
 
 
 def test_unknown_mandatory_index_extension_refused(installed_cli,repo,git_env):

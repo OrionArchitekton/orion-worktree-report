@@ -182,7 +182,12 @@ def render(r, structured):
     if structured:
         return raw, r['exit']
     lines = [f"coverage={r.get('coverage', {}).get('status', 'version')} conclusion={r.get('conclusion', 'version')} exit={r['exit']}"]
+    if 'coverage' in r:
+        lines.append(json.dumps({'coverage': r['coverage']}, ensure_ascii=True))
     lines += [json.dumps(x, ensure_ascii=True) for key in ('inputs', 'repositories', 'worktrees', 'overlaps', 'problems') for x in r.get(key, [])]
     if r['command'] == 'version':
         lines = [f"orion-worktree-report {__version__}; interface=1; authority=none"]
-    return '\n'.join(lines) + '\n', r['exit']
+    text = '\n'.join(lines) + '\n'
+    if len(text.encode('utf-8')) > 1048576:
+        return render(failure('output_limit'), False)
+    return text, r['exit']

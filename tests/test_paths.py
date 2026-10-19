@@ -67,15 +67,22 @@ def test_raw_absolute_root_and_locked_registration(installed_cli,tmp_path,git_en
 
 @pytest.mark.parametrize('algorithm',['sha1','sha256'])
 @pytest.mark.parametrize('index_version',[2,3,4])
-def test_native_index_formats(installed_cli,tmp_path,git_env,algorithm,index_version):
+@pytest.mark.parametrize('gitlink',[False,True])
+def test_native_index_formats(installed_cli,tmp_path,git_env,algorithm,index_version,gitlink):
     root=tmp_path/'native-index';root.mkdir()
     git(root,'init','-b','synthetic','--object-format='+algorithm,env=git_env)
     for name in ['link','nested-a','nested-b']:(root/name).write_text('base\n')
     git(root,'add','.',env=git_env)
     git(root,'-c','user.name=Synthetic','-c','user.email=fixture@example.invalid','commit','-m','base',env=git_env)
+    if gitlink:
+        oid=git(root,'rev-parse','HEAD',env=git_env).strip().decode()
+        git(root,'update-index','--add','--cacheinfo','160000,'+oid+',sub',env=git_env)
     git(root,'update-index','--index-version',index_version,env=git_env)
     (root/'link').write_text('dirty\n')
     p,r=invoke(installed_cli,[root],env=git_env)
+    if gitlink:
+        assert p.returncode==4 and r['problems'][0]['feature']=='submodule',r
+        return
     assert p.returncode==0,r
     assert r['worktrees'][0]['dirty_paths'][0]['path_utf8']=='link'
     assert len(r['worktrees'][0]['head']['oid'])==(40 if algorithm=='sha1' else 64)
@@ -87,3 +94,30 @@ def test_intent_to_add_extended_index_entry(installed_cli,repo,git_env):
     p,r=invoke(installed_cli,[repo],env=git_env)
     assert p.returncode==0,r
     assert {x['path_utf8'] for x in r['worktrees'][0]['dirty_paths']}=={'intent'}
+
+
+@pytest.mark.parametrize('algorithm',['sha1','sha256'])
+@pytest.mark.parametrize('index_version',[2,3,4])
+@pytest.mark.parametrize('flag',['--assume-unchanged','--skip-worktree'])
+def test_hidden_index_changes_are_unavailable(installed_cli,tmp_path,git_env,algorithm,index_version,flag):
+    from test_effects import inventory
+    root=tmp_path/'hidden-changes';root.mkdir()
+    git(root,'init','-b','synthetic','--object-format='+algorithm,env=git_env)
+    (root/'shared.txt').write_text('base\n')
+    git(root,'add','.',env=git_env)
+    git(root,'-c','user.name=Synthetic','-c','user.email=fixture@example.invalid','commit','-m','base',env=git_env)
+    linked=tmp_path/'linked'
+    git(root,'worktree','add','--detach',linked,env=git_env)
+    for checkout in [root,linked]:
+        git(checkout,'update-index',flag,'shared.txt',env=git_env)
+        git(checkout,'update-index','--index-version',index_version,env=git_env)
+        (checkout/'shared.txt').write_text('hidden change\n')
+        assert git(checkout,'status','--porcelain=v2',env=git_env)==b'', 'Fixture must hide the change from Git status'
+    before=inventory([root,linked])
+    p,r=invoke(installed_cli,[root],env=git_env)
+    assert p.returncode==4,r
+    assert r['coverage']['status']=='unavailable' and r['conclusion']=='indeterminate'
+    assert all(w['dirty_paths'] is None for w in r['worktrees'])
+    assert {e['code'] for e in r['problems']}=={'unsupported_repository_feature'}
+    assert {e['feature'] for e in r['problems']}=={'unproven_read_effect'}
+    assert inventory([root,linked])==before

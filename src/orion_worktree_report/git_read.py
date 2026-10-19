@@ -197,9 +197,6 @@ class Git:
             raise ReadError('unsupported_repository_feature', 'unproven_read_effect')
         index = fingerprint(os.path.join(gd, b'index'), 128 * 1024 * 1024, 'index_limit',
                             optional=True, deadline=self.deadline, index_algorithm=algorithm.decode())
-        entries = self.run(root, 'ls-files', '--stage', '-z')
-        if any(x.startswith(b'160000 ') for x in entries.split(b'\0')):
-            raise ReadError('unsupported_repository_feature', 'submodule')
         return config, index
 
     def line(self, root, *args, allowed=(0,)):
@@ -345,11 +342,19 @@ def check_index(data, algorithm, deadline):
         fixed = 42+width
         if pos+fixed > end:
             raise ReadError('status_parse_error')
+        if int.from_bytes(data[pos+24:pos+28], 'big') & 0o170000 == 0o160000:
+            raise ReadError('unsupported_repository_feature', 'submodule')
         flags = int.from_bytes(data[pos+40+width:pos+fixed], 'big')
+        if flags & 0x8000:  # assume-valid can suppress modified tracked paths.
+            raise ReadError('unsupported_repository_feature', 'unproven_read_effect')
         pos += fixed
         if flags & 0x4000:
             if version == 2 or pos+2 > end:
                 raise ReadError('status_parse_error')
+            extended = int.from_bytes(data[pos:pos+2], 'big')
+            # Intent-to-add is observable; skip-worktree and unknown flags are not.
+            if extended & ~0x2000:
+                raise ReadError('unsupported_repository_feature', 'unproven_read_effect')
             pos += 2
         if version == 4:
             # Skip the bounded prefix-removal varint; paths themselves remain Git's job.
