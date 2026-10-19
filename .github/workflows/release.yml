@@ -16,9 +16,9 @@ jobs:
         run: |
           mkdir dist
           curl --fail --silent --show-error --location --retry 3 -o dist/orion_worktree_report-0.1.0-py3-none-any.whl https://github.com/OrionArchitekton/orion-worktree-report/releases/download/v0.1.0/orion_worktree_report-0.1.0-py3-none-any.whl
-          echo "407debe349c60106df2543ba94e589bfbffdd0ea043dd16466c89abfec7ad7d4  dist/orion_worktree_report-0.1.0-py3-none-any.whl" | sha256sum --check --strict -
+          echo "0ed507b4a0d8cb054e355206d8f09867e637df099b135e6cbbba6a5a9a5b5bab  dist/orion_worktree_report-0.1.0-py3-none-any.whl" | sha256sum --check --strict -
           curl --fail --silent --show-error --location --retry 3 -o dist/orion_worktree_report-0.1.0.tar.gz https://github.com/OrionArchitekton/orion-worktree-report/releases/download/v0.1.0/orion_worktree_report-0.1.0.tar.gz
-          echo "d41600cc0b8ea8ae03616444242f950a728be106443b1739ebd5f2264c3b89cf  dist/orion_worktree_report-0.1.0.tar.gz" | sha256sum --check --strict -
+          echo "648f99b38b452f34075ae0a94c6c160b0649257ee071770d9dd95dda08fa554e  dist/orion_worktree_report-0.1.0.tar.gz" | sha256sum --check --strict -
   publish:
     needs: verify
     runs-on: ubuntu-latest
@@ -33,7 +33,7 @@ jobs:
         run: |
           mkdir dist
           curl --fail --silent --show-error --location --retry 3 -o dist/orion_worktree_report-0.1.0-py3-none-any.whl https://github.com/OrionArchitekton/orion-worktree-report/releases/download/v0.1.0/orion_worktree_report-0.1.0-py3-none-any.whl
-          echo "407debe349c60106df2543ba94e589bfbffdd0ea043dd16466c89abfec7ad7d4  dist/orion_worktree_report-0.1.0-py3-none-any.whl" | sha256sum --check --strict -
+          echo "0ed507b4a0d8cb054e355206d8f09867e637df099b135e6cbbba6a5a9a5b5bab  dist/orion_worktree_report-0.1.0-py3-none-any.whl" | sha256sum --check --strict -
           curl --fail --silent --show-error --location --retry 3 -o dist/orion_worktree_report-0.1.0.tar.gz https://github.com/OrionArchitekton/orion-worktree-report/releases/download/v0.1.0/orion_worktree_report-0.1.0.tar.gz
-          echo "d41600cc0b8ea8ae03616444242f950a728be106443b1739ebd5f2264c3b89cf  dist/orion_worktree_report-0.1.0.tar.gz" | sha256sum --check --strict -
+          echo "648f99b38b452f34075ae0a94c6c160b0649257ee071770d9dd95dda08fa554e  dist/orion_worktree_report-0.1.0.tar.gz" | sha256sum --check --strict -
       - uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2

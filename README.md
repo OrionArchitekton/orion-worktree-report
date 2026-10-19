@@ -27,7 +27,7 @@ curl --fail --location --proto '=https' --tlsv1.2 --max-time 60 \
 printf '71138adf1f4ca900cdb7d289c21b7494329f2332b6d85f0e1c42108c0384ed3e  pip-26.2.1-py3-none-any.whl\n' | sha256sum --check --strict
 python3.11 -m zipfile -e pip-26.2.1-py3-none-any.whl .installer
 python3.11 -m venv --without-pip .venv
-python3.11 -I .installer/pip --python .venv/bin/python install --no-index --no-deps ./orion_worktree_report-0.1.0-py3-none-any.whl
+python3.11 -I .installer/pip --isolated --python .venv/bin/python install --no-index --no-deps ./orion_worktree_report-0.1.0-py3-none-any.whl
 .venv/bin/orion-worktree-report --json version
 ```
 
@@ -92,7 +92,7 @@ Reports contain absolute local roots, branch names and relative file names. Keep
 Only `version`, `scan` and help exist. There is no cleanup, linking, merge preview, repair, fetch, daemon, task acquisition or automatic activation. PM, browser, Handoff and Results integrations remain separate consumer work; installation changes none of their pins or state.
 
 ```bash
-python3.11 -I .installer/pip --python .venv/bin/python uninstall -y orion-worktree-report
+python3.11 -I .installer/pip --isolated --python .venv/bin/python uninstall -y orion-worktree-report
 ```
 
 Uninstall removes package files. Your repositories, worktrees and explicitly saved JSON reports remain yours.
@@ -102,7 +102,7 @@ Uninstall removes package files. Your repositories, worktrees and explicitly sav
 ```bash
 # Reuse the checksum-verified .installer prepared above.
 python3.11 -m venv --without-pip .dev
-python3.11 -I .installer/pip --python .dev/bin/python install --require-hashes -r requirements-test.lock
+python3.11 -I .installer/pip --isolated --python .dev/bin/python install --require-hashes -r requirements-test.lock
 .dev/bin/python -m pytest
 .dev/bin/python -m build --no-isolation
 .dev/bin/python tools/verify_release.py
