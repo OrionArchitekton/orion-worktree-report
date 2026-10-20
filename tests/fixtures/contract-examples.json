@@ -1,0 +1,545 @@
+{
+  "classification": "PRIVATE_DESIGN_FIXTURES_NOT_EXECUTION_RECEIPTS",
+  "spec": "specs/worktree-reporting-core-spec.md",
+  "cases": [
+    {
+      "name": "version",
+      "expected": {
+        "interface_version": 1,
+        "package_version": "0.1.0",
+        "command": "version",
+        "authority": "none",
+        "capabilities": [
+          "inventory.v1",
+          "dirty-path-overlaps.v1",
+          "coverage.v1"
+        ],
+        "exit": 0
+      }
+    },
+    {
+      "name": "complete_no_overlap",
+      "expected": {
+        "interface_version": 1,
+        "package_version": "0.1.0",
+        "command": "scan",
+        "scan_id": "00000000-0000-4000-8000-000000000001",
+        "started_at": "2026-10-19T00:00:00Z",
+        "finished_at": "2026-10-19T00:00:01Z",
+        "authority": "none",
+        "scope": "registered-worktrees/dirty-paths",
+        "ignore_policy": "repository-only",
+        "inputs": [
+          {
+            "root": {
+              "path_b64": "L3RtcC9zZWxlY3RlZC1yZXBvcnQvcmVwbw==",
+              "path_utf8": "/tmp/selected-report/repo"
+            },
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "problem": null
+          }
+        ],
+        "repositories": [
+          {
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "common_directory": {
+              "path_b64": "L3RtcC9zZWxlY3RlZC1yZXBvcnQvcmVwby8uZ2l0",
+              "path_utf8": "/tmp/selected-report/repo/.git"
+            },
+            "discovery_state": "observed"
+          }
+        ],
+        "worktrees": [
+          {
+            "worktree_id": "sha256:fa553020bad6ce26cd44ef94a88619e5ca3549f698423cb4a7635a1817c4abf7",
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "root": {
+              "path_b64": "L3RtcC9zZWxlY3RlZC1yZXBvcnQvZ3JvdXAvd29ya2VyLWE=",
+              "path_utf8": "/tmp/selected-report/group/worker-a"
+            },
+            "observation_state": "observed",
+            "head": {
+              "state": "commit",
+              "oid": "1111111111111111111111111111111111111111",
+              "branch": {
+                "path_b64": "cmVmcy9oZWFkcy93b3JrZXItMQ==",
+                "path_utf8": "refs/heads/worker-1"
+              }
+            },
+            "dirty_paths": [],
+            "renames": []
+          },
+          {
+            "worktree_id": "sha256:d79e864df5fe206a63406a813ec49c99bf42470ff4afee078e2c6abb1e2d6ced",
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "root": {
+              "path_b64": "L3RtcC9zZWxlY3RlZC1yZXBvcnQvZ3JvdXAvd29ya2VyLWI=",
+              "path_utf8": "/tmp/selected-report/group/worker-b"
+            },
+            "observation_state": "observed",
+            "head": {
+              "state": "commit",
+              "oid": "1111111111111111111111111111111111111111",
+              "branch": {
+                "path_b64": "cmVmcy9oZWFkcy93b3JrZXItMg==",
+                "path_utf8": "refs/heads/worker-2"
+              }
+            },
+            "dirty_paths": [],
+            "renames": []
+          },
+          {
+            "worktree_id": "sha256:d14efd77a3532cf70c6e0ca0577ed2b2f4211afd38f9273bd2acd3a3c6ee4999",
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "root": {
+              "path_b64": "L3RtcC9zZWxlY3RlZC1yZXBvcnQvcmVwbw==",
+              "path_utf8": "/tmp/selected-report/repo"
+            },
+            "observation_state": "observed",
+            "head": {
+              "state": "commit",
+              "oid": "1111111111111111111111111111111111111111",
+              "branch": {
+                "path_b64": "cmVmcy9oZWFkcy9tYWlu",
+                "path_utf8": "refs/heads/main"
+              }
+            },
+            "dirty_paths": [],
+            "renames": []
+          }
+        ],
+        "overlaps": [],
+        "coverage": {
+          "status": "complete",
+          "repositories_selected": 1,
+          "repositories_discovered": 1,
+          "registered_worktrees": 3,
+          "worktrees_observed": 3,
+          "worktrees_unavailable": 0
+        },
+        "problems": [],
+        "conclusion": "no_overlap_observed",
+        "exit": 0
+      }
+    },
+    {
+      "name": "complete_overlap",
+      "expected": {
+        "interface_version": 1,
+        "package_version": "0.1.0",
+        "command": "scan",
+        "scan_id": "00000000-0000-4000-8000-000000000001",
+        "started_at": "2026-10-19T00:00:00Z",
+        "finished_at": "2026-10-19T00:00:01Z",
+        "authority": "none",
+        "scope": "registered-worktrees/dirty-paths",
+        "ignore_policy": "repository-only",
+        "inputs": [
+          {
+            "root": {
+              "path_b64": "L3RtcC9zZWxlY3RlZC1yZXBvcnQvcmVwbw==",
+              "path_utf8": "/tmp/selected-report/repo"
+            },
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "problem": null
+          }
+        ],
+        "repositories": [
+          {
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "common_directory": {
+              "path_b64": "L3RtcC9zZWxlY3RlZC1yZXBvcnQvcmVwby8uZ2l0",
+              "path_utf8": "/tmp/selected-report/repo/.git"
+            },
+            "discovery_state": "observed"
+          }
+        ],
+        "worktrees": [
+          {
+            "worktree_id": "sha256:fa553020bad6ce26cd44ef94a88619e5ca3549f698423cb4a7635a1817c4abf7",
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "root": {
+              "path_b64": "L3RtcC9zZWxlY3RlZC1yZXBvcnQvZ3JvdXAvd29ya2VyLWE=",
+              "path_utf8": "/tmp/selected-report/group/worker-a"
+            },
+            "observation_state": "observed",
+            "head": {
+              "state": "commit",
+              "oid": "1111111111111111111111111111111111111111",
+              "branch": {
+                "path_b64": "cmVmcy9oZWFkcy93b3JrZXItMQ==",
+                "path_utf8": "refs/heads/worker-1"
+              }
+            },
+            "dirty_paths": [
+              {
+                "path_b64": "c3JjL2FwcC5weQ==",
+                "path_utf8": "src/app.py"
+              }
+            ],
+            "renames": []
+          },
+          {
+            "worktree_id": "sha256:d79e864df5fe206a63406a813ec49c99bf42470ff4afee078e2c6abb1e2d6ced",
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "root": {
+              "path_b64": "L3RtcC9zZWxlY3RlZC1yZXBvcnQvZ3JvdXAvd29ya2VyLWI=",
+              "path_utf8": "/tmp/selected-report/group/worker-b"
+            },
+            "observation_state": "observed",
+            "head": {
+              "state": "commit",
+              "oid": "1111111111111111111111111111111111111111",
+              "branch": {
+                "path_b64": "cmVmcy9oZWFkcy93b3JrZXItMg==",
+                "path_utf8": "refs/heads/worker-2"
+              }
+            },
+            "dirty_paths": [
+              {
+                "path_b64": "c3JjL2FwcC5weQ==",
+                "path_utf8": "src/app.py"
+              }
+            ],
+            "renames": []
+          },
+          {
+            "worktree_id": "sha256:d14efd77a3532cf70c6e0ca0577ed2b2f4211afd38f9273bd2acd3a3c6ee4999",
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "root": {
+              "path_b64": "L3RtcC9zZWxlY3RlZC1yZXBvcnQvcmVwbw==",
+              "path_utf8": "/tmp/selected-report/repo"
+            },
+            "observation_state": "observed",
+            "head": {
+              "state": "commit",
+              "oid": "1111111111111111111111111111111111111111",
+              "branch": {
+                "path_b64": "cmVmcy9oZWFkcy9tYWlu",
+                "path_utf8": "refs/heads/main"
+              }
+            },
+            "dirty_paths": [],
+            "renames": []
+          }
+        ],
+        "overlaps": [
+          {
+            "id": "sha256:59b62088f94a914f271796f728ca423eaf55c9c517183c9327503e16e87ee456",
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "worktree_ids": [
+              "sha256:d79e864df5fe206a63406a813ec49c99bf42470ff4afee078e2c6abb1e2d6ced",
+              "sha256:fa553020bad6ce26cd44ef94a88619e5ca3549f698423cb4a7635a1817c4abf7"
+            ],
+            "path": {
+              "path_b64": "c3JjL2FwcC5weQ==",
+              "path_utf8": "src/app.py"
+            }
+          }
+        ],
+        "coverage": {
+          "status": "complete",
+          "repositories_selected": 1,
+          "repositories_discovered": 1,
+          "registered_worktrees": 3,
+          "worktrees_observed": 3,
+          "worktrees_unavailable": 0
+        },
+        "problems": [],
+        "conclusion": "overlap_observed",
+        "exit": 1
+      }
+    },
+    {
+      "name": "partial_without_positive",
+      "expected": {
+        "interface_version": 1,
+        "package_version": "0.1.0",
+        "command": "scan",
+        "scan_id": "00000000-0000-4000-8000-000000000001",
+        "started_at": "2026-10-19T00:00:00Z",
+        "finished_at": "2026-10-19T00:00:01Z",
+        "authority": "none",
+        "scope": "registered-worktrees/dirty-paths",
+        "ignore_policy": "repository-only",
+        "inputs": [
+          {
+            "root": {
+              "path_b64": "L3RtcC9zZWxlY3RlZC1yZXBvcnQvcmVwbw==",
+              "path_utf8": "/tmp/selected-report/repo"
+            },
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "problem": null
+          }
+        ],
+        "repositories": [
+          {
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "common_directory": {
+              "path_b64": "L3RtcC9zZWxlY3RlZC1yZXBvcnQvcmVwby8uZ2l0",
+              "path_utf8": "/tmp/selected-report/repo/.git"
+            },
+            "discovery_state": "observed"
+          }
+        ],
+        "worktrees": [
+          {
+            "worktree_id": "sha256:fa553020bad6ce26cd44ef94a88619e5ca3549f698423cb4a7635a1817c4abf7",
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "root": {
+              "path_b64": "L3RtcC9zZWxlY3RlZC1yZXBvcnQvZ3JvdXAvd29ya2VyLWE=",
+              "path_utf8": "/tmp/selected-report/group/worker-a"
+            },
+            "observation_state": "observed",
+            "head": {
+              "state": "commit",
+              "oid": "1111111111111111111111111111111111111111",
+              "branch": {
+                "path_b64": "cmVmcy9oZWFkcy93b3JrZXItMQ==",
+                "path_utf8": "refs/heads/worker-1"
+              }
+            },
+            "dirty_paths": [],
+            "renames": []
+          },
+          {
+            "worktree_id": "sha256:d79e864df5fe206a63406a813ec49c99bf42470ff4afee078e2c6abb1e2d6ced",
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "root": {
+              "path_b64": "L3RtcC9zZWxlY3RlZC1yZXBvcnQvZ3JvdXAvd29ya2VyLWI=",
+              "path_utf8": "/tmp/selected-report/group/worker-b"
+            },
+            "observation_state": "unavailable",
+            "head": null,
+            "dirty_paths": null,
+            "renames": null
+          },
+          {
+            "worktree_id": "sha256:d14efd77a3532cf70c6e0ca0577ed2b2f4211afd38f9273bd2acd3a3c6ee4999",
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "root": {
+              "path_b64": "L3RtcC9zZWxlY3RlZC1yZXBvcnQvcmVwbw==",
+              "path_utf8": "/tmp/selected-report/repo"
+            },
+            "observation_state": "observed",
+            "head": {
+              "state": "commit",
+              "oid": "1111111111111111111111111111111111111111",
+              "branch": {
+                "path_b64": "cmVmcy9oZWFkcy9tYWlu",
+                "path_utf8": "refs/heads/main"
+              }
+            },
+            "dirty_paths": [],
+            "renames": []
+          }
+        ],
+        "overlaps": [],
+        "coverage": {
+          "status": "partial",
+          "repositories_selected": 1,
+          "repositories_discovered": 1,
+          "registered_worktrees": 3,
+          "worktrees_observed": 2,
+          "worktrees_unavailable": 1
+        },
+        "problems": [
+          {
+            "scope": "worktree",
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "worktree_id": "sha256:d79e864df5fe206a63406a813ec49c99bf42470ff4afee078e2c6abb1e2d6ced",
+            "code": "checkout_unavailable"
+          }
+        ],
+        "conclusion": "indeterminate",
+        "exit": 3
+      }
+    },
+    {
+      "name": "partial_with_positive",
+      "expected": {
+        "interface_version": 1,
+        "package_version": "0.1.0",
+        "command": "scan",
+        "scan_id": "00000000-0000-4000-8000-000000000001",
+        "started_at": "2026-10-19T00:00:00Z",
+        "finished_at": "2026-10-19T00:00:01Z",
+        "authority": "none",
+        "scope": "registered-worktrees/dirty-paths",
+        "ignore_policy": "repository-only",
+        "inputs": [
+          {
+            "root": {
+              "path_b64": "L3RtcC9zZWxlY3RlZC1yZXBvcnQvcmVwbw==",
+              "path_utf8": "/tmp/selected-report/repo"
+            },
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "problem": null
+          }
+        ],
+        "repositories": [
+          {
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "common_directory": {
+              "path_b64": "L3RtcC9zZWxlY3RlZC1yZXBvcnQvcmVwby8uZ2l0",
+              "path_utf8": "/tmp/selected-report/repo/.git"
+            },
+            "discovery_state": "observed"
+          }
+        ],
+        "worktrees": [
+          {
+            "worktree_id": "sha256:fa553020bad6ce26cd44ef94a88619e5ca3549f698423cb4a7635a1817c4abf7",
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "root": {
+              "path_b64": "L3RtcC9zZWxlY3RlZC1yZXBvcnQvZ3JvdXAvd29ya2VyLWE=",
+              "path_utf8": "/tmp/selected-report/group/worker-a"
+            },
+            "observation_state": "observed",
+            "head": {
+              "state": "commit",
+              "oid": "1111111111111111111111111111111111111111",
+              "branch": {
+                "path_b64": "cmVmcy9oZWFkcy93b3JrZXItMQ==",
+                "path_utf8": "refs/heads/worker-1"
+              }
+            },
+            "dirty_paths": [
+              {
+                "path_b64": "c3JjL2FwcC5weQ==",
+                "path_utf8": "src/app.py"
+              }
+            ],
+            "renames": []
+          },
+          {
+            "worktree_id": "sha256:d79e864df5fe206a63406a813ec49c99bf42470ff4afee078e2c6abb1e2d6ced",
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "root": {
+              "path_b64": "L3RtcC9zZWxlY3RlZC1yZXBvcnQvZ3JvdXAvd29ya2VyLWI=",
+              "path_utf8": "/tmp/selected-report/group/worker-b"
+            },
+            "observation_state": "observed",
+            "head": {
+              "state": "commit",
+              "oid": "1111111111111111111111111111111111111111",
+              "branch": {
+                "path_b64": "cmVmcy9oZWFkcy93b3JrZXItMg==",
+                "path_utf8": "refs/heads/worker-2"
+              }
+            },
+            "dirty_paths": [
+              {
+                "path_b64": "c3JjL2FwcC5weQ==",
+                "path_utf8": "src/app.py"
+              }
+            ],
+            "renames": []
+          },
+          {
+            "worktree_id": "sha256:d14efd77a3532cf70c6e0ca0577ed2b2f4211afd38f9273bd2acd3a3c6ee4999",
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "root": {
+              "path_b64": "L3RtcC9zZWxlY3RlZC1yZXBvcnQvcmVwbw==",
+              "path_utf8": "/tmp/selected-report/repo"
+            },
+            "observation_state": "unavailable",
+            "head": null,
+            "dirty_paths": null,
+            "renames": null
+          }
+        ],
+        "overlaps": [
+          {
+            "id": "sha256:59b62088f94a914f271796f728ca423eaf55c9c517183c9327503e16e87ee456",
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "worktree_ids": [
+              "sha256:d79e864df5fe206a63406a813ec49c99bf42470ff4afee078e2c6abb1e2d6ced",
+              "sha256:fa553020bad6ce26cd44ef94a88619e5ca3549f698423cb4a7635a1817c4abf7"
+            ],
+            "path": {
+              "path_b64": "c3JjL2FwcC5weQ==",
+              "path_utf8": "src/app.py"
+            }
+          }
+        ],
+        "coverage": {
+          "status": "partial",
+          "repositories_selected": 1,
+          "repositories_discovered": 1,
+          "registered_worktrees": 3,
+          "worktrees_observed": 2,
+          "worktrees_unavailable": 1
+        },
+        "problems": [
+          {
+            "scope": "worktree",
+            "repository_id": "sha256:2973d5656443c55d2430ff260f885048f60b52b7fe8ed6b9096c67f12978648d",
+            "worktree_id": "sha256:d14efd77a3532cf70c6e0ca0577ed2b2f4211afd38f9273bd2acd3a3c6ee4999",
+            "code": "checkout_unavailable"
+          }
+        ],
+        "conclusion": "overlap_observed",
+        "exit": 3
+      }
+    },
+    {
+      "name": "unavailable_discovery",
+      "expected": {
+        "interface_version": 1,
+        "package_version": "0.1.0",
+        "command": "scan",
+        "scan_id": "00000000-0000-4000-8000-000000000001",
+        "started_at": "2026-10-19T00:00:00Z",
+        "finished_at": "2026-10-19T00:00:01Z",
+        "authority": "none",
+        "scope": "registered-worktrees/dirty-paths",
+        "ignore_policy": "repository-only",
+        "inputs": [
+          {
+            "root": {
+              "path_b64": "L3RtcC9zZWxlY3RlZC1yZXBvcnQvcmVwbw==",
+              "path_utf8": "/tmp/selected-report/repo"
+            },
+            "repository_id": null,
+            "problem": {
+              "code": "repository_unavailable"
+            }
+          }
+        ],
+        "repositories": [],
+        "worktrees": [],
+        "overlaps": [],
+        "coverage": {
+          "status": "unavailable",
+          "repositories_selected": 1,
+          "repositories_discovered": 0,
+          "registered_worktrees": null,
+          "worktrees_observed": 0,
+          "worktrees_unavailable": 0
+        },
+        "problems": [
+          {
+            "scope": "selection",
+            "repository_id": null,
+            "worktree_id": null,
+            "code": "repository_unavailable"
+          }
+        ],
+        "conclusion": "indeterminate",
+        "exit": 4
+      }
+    }
+  ],
+  "path_examples": [
+    {
+      "path_b64": "ICBzcGFjZWQgLT4gcGF0aAkKLnR4dCAg",
+      "path_utf8": "  spaced -> path\t\n.txt  "
+    },
+    {
+      "path_b64": "bm9uLXV0Zjgt/y50eHQ=",
+      "path_utf8": null
+    }
+  ],
+  "id_recipe": "sha256 of UTF-8 compact JSON array [domain_tag, canonical_identity_components...] with ensure_ascii=true, no whitespace; byte paths represented as padded Base64. Repository canonical component is its real common-directory byte path; worktree adds repository ID and real checkout root; overlap adds repository ID, relative path Base64 and sorted worktree ID pair. These are local identity/correlation values, never authority."
+}

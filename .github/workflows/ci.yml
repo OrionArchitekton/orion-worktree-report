@@ -1,0 +1,64 @@
+name: candidate-checks
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  core-and-artifacts:
+    name: core-and-artifacts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11'
+      - name: Install native trace prerequisite
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y strace
+      - name: Verify source and installed artifacts
+        run: |
+          curl --fail --location --proto '=https' --tlsv1.2 --max-time 60 https://files.pythonhosted.org/packages/f3/6e/1736e5b4ae2b778ef2f81c47d797de9f891d4d8acb047a24ca37a60294dd/pip-26.2.1-py3-none-any.whl --output installer.whl
+          printf '71138adf1f4ca900cdb7d289c21b7494329f2332b6d85f0e1c42108c0384ed3e  installer.whl\n' | sha256sum --check --strict
+          python -m zipfile -e installer.whl .private/installer
+          python -m venv --without-pip .private/dev
+          python -I .private/installer/pip --python .private/dev/bin/python install --require-hashes -r requirements-test.lock
+          .private/dev/bin/python -m pytest
+          .private/dev/bin/python -m build --no-isolation
+          .private/dev/bin/python tools/verify_release.py
+  gitleaks:
+    name: gitleaks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Verify scanner and require a clean scan
+        shell: bash
+        run: |
+          set -euo pipefail
+          scanner_dir="$(mktemp -d "$RUNNER_TEMP/worktree-report-scan.XXXXXX")"
+          curl -fsSL --max-time 60 https://github.com/gitleaks/gitleaks/releases/download/v8.24.3/gitleaks_8.24.3_linux_x64.tar.gz -o "$scanner_dir/scanner.tar.gz"
+          printf '9991e0b2903da4c8f6122b5c3186448b927a5da4deef1fe45271c3793f4ee29c  %s\n' "$scanner_dir/scanner.tar.gz" | sha256sum -c -
+          tar -xzOf "$scanner_dir/scanner.tar.gz" gitleaks > "$scanner_dir/gitleaks"
+          chmod 700 "$scanner_dir/gitleaks"
+          "$scanner_dir/gitleaks" git . --redact --report-format json --report-path "$scanner_dir/report.json"
+          python -c 'import json,sys; assert json.load(open(sys.argv[1])) == []' "$scanner_dir/report.json"
+  required-checks-fail-closed:
+    name: required-checks-fail-closed
+    if: always()
+    needs: [core-and-artifacts, gitleaks]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Require both jobs to succeed
+        env:
+          CORE: ${{ needs.core-and-artifacts.result }}
+          SECRETS: ${{ needs.gitleaks.result }}
+        run: test "$CORE" = success && test "$SECRETS" = success

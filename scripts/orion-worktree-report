@@ -1,0 +1,3 @@
+#!/bin/sh
+# Dedicated-environment launcher: isolate imports and disable bytecode at startup.
+exec "${0%/*}/python" -I -B -m orion_worktree_report "$@"

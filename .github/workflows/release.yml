@@ -1,0 +1,39 @@
+name: release
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pypi-release
+  cancel-in-progress: false
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Download and verify source-pinned release bytes
+        run: |
+          mkdir dist
+          curl --fail --silent --show-error --location --retry 3 -o dist/orion_worktree_report-0.1.0-py3-none-any.whl https://github.com/OrionArchitekton/orion-worktree-report/releases/download/v0.1.0/orion_worktree_report-0.1.0-py3-none-any.whl
+          echo "f06d7ca9d3fd1001b9bd16ed18a8ee7827727c09eeb4a535f41692723336550b  dist/orion_worktree_report-0.1.0-py3-none-any.whl" | sha256sum --check --strict -
+          curl --fail --silent --show-error --location --retry 3 -o dist/orion_worktree_report-0.1.0.tar.gz https://github.com/OrionArchitekton/orion-worktree-report/releases/download/v0.1.0/orion_worktree_report-0.1.0.tar.gz
+          echo "75cb313b90447a5ecc5bd1da42126e203d78a873f2031cfd6793a2b0ae990ba4  dist/orion_worktree_report-0.1.0.tar.gz" | sha256sum --check --strict -
+  publish:
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: pypi
+      url: https://pypi.org/p/orion-worktree-report
+    permissions:
+      id-token: write
+    steps:
+      - name: Download and verify the identical bytes without rebuilding
+        run: |
+          mkdir dist
+          curl --fail --silent --show-error --location --retry 3 -o dist/orion_worktree_report-0.1.0-py3-none-any.whl https://github.com/OrionArchitekton/orion-worktree-report/releases/download/v0.1.0/orion_worktree_report-0.1.0-py3-none-any.whl
+          echo "f06d7ca9d3fd1001b9bd16ed18a8ee7827727c09eeb4a535f41692723336550b  dist/orion_worktree_report-0.1.0-py3-none-any.whl" | sha256sum --check --strict -
+          curl --fail --silent --show-error --location --retry 3 -o dist/orion_worktree_report-0.1.0.tar.gz https://github.com/OrionArchitekton/orion-worktree-report/releases/download/v0.1.0/orion_worktree_report-0.1.0.tar.gz
+          echo "75cb313b90447a5ecc5bd1da42126e203d78a873f2031cfd6793a2b0ae990ba4  dist/orion_worktree_report-0.1.0.tar.gz" | sha256sum --check --strict -
+      - uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
