@@ -21,7 +21,7 @@
   "limits": "No platform-wide, sandbox, merge-safety, atomic-snapshot, runtime-integration or public-availability claim",
   "hosted_checks": "See public PR #1 for the exact reviewed head and native required checks; local acceptance does not establish hosted availability.",
   "observed_source_suite": {
-    "tests_passed": 91,
+    "tests_passed": 93,
     "exit": 0,
     "scope": "Installed wheel built from reviewed source plus supplemental artifact/contract cases"
   },
@@ -34,6 +34,7 @@
     "Unknown mandatory index extension refusal",
     "Main, linked and worktree-specific include targets never opened before refusal (native strace)",
     "Only the reporter distribution in no-pip target; reviewed external installer versions recorded",
-    "Assume-unchanged and skip-worktree refusal across SHA-1/SHA-256 and native index versions; intent-to-add remains observable"
+    "Assume-unchanged and skip-worktree refusal across SHA-1/SHA-256 and native index versions; intent-to-add remains observable",
+    "Isolated installed launcher ignores caller working-directory and PYTHONPATH shadow packages"
   ]
 }

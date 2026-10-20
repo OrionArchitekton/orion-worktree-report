@@ -13,7 +13,7 @@ references:
 
 ## Rollout and prerequisites
 
-Install the reviewed wheel into a dedicated virtual environment with its own bin/python using the README. The POSIX launcher starts Python with -B before startup so cold imports cannot create bytecode caches in a selected repository. Other installation layouts are unverified. No service, timer, hook, daemon, Git configuration change or package integration is installed. Use only the declared acceptance target. The executable on PATH must be trusted; configuration must remain cooperative and stable. Keep Git ownership checks intact. Never add a safe.directory bypass to make a refused repository pass.
+Install the reviewed wheel into a dedicated virtual environment with its own bin/python using the README. The POSIX launcher starts Python with -I -B so caller import paths cannot shadow the installed reporter and cold imports cannot create bytecode caches in a selected repository. Other installation layouts are unverified. No service, timer, hook, daemon, Git configuration change or package integration is installed. Use only the declared acceptance target. The executable on PATH must be trusted; configuration must remain cooperative and stable. Keep Git ownership checks intact. Never add a safe.directory bypass to make a refused repository pass.
 
 Select up to eight absolute checkout roots explicitly. Roots must be checkout roots, not arbitrary subdirectories. All registrations of each selected repository enter coverage, including locked and missing/prunable worktrees. Aliases deduplicate by common directory; clones remain distinct. The scope is uncommitted dirty-path observations, not branch divergence or semantic merge safety.
 

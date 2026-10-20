@@ -150,3 +150,18 @@ def test_unknown_mandatory_index_extension_refused(installed_cli,repo,git_env):
     p,r=invoke(installed_cli,[repo],env=git_env)
     assert p.returncode==4 and r['problems'][0]['feature']=='unproven_read_effect',r
     assert inventory([repo])==before
+
+
+@pytest.mark.parametrize('location',['cwd','pythonpath'])
+def test_installed_launcher_ignores_shadow_package(installed_cli,repo,tmp_path,git_env,location):
+    shadow=repo if location=='cwd' else tmp_path/'pythonpath'
+    package=shadow/'orion_worktree_report';package.mkdir(parents=True)
+    sentinel=tmp_path/'shadow-imported'
+    (package/'__init__.py').write_text('from pathlib import Path\nPath('+repr(str(sentinel))+').touch()\n')
+    (package/'__main__.py').write_text('print("synthetic shadow package executed")\n')
+    env={**git_env,'PYTHONPATH':str(shadow)}
+    p=subprocess.run([str(installed_cli),'--json','version'],cwd=repo,env=env,capture_output=True,timeout=10)
+    import json
+    assert not sentinel.exists(), 'The installed command imported caller-controlled code'
+    r=json.loads(p.stdout)
+    assert p.returncode==0 and r['package_version']=='0.1.0' and r['authority']=='none'

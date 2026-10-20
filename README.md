@@ -6,7 +6,7 @@ v0.1.0. MIT; retained ECC acknowledgment and license are in [NOTICE](NOTICE).
 
 ## Supported target
 
-The acceptance target is CPython 3.11, Git 2.43.0 and Linux x86_64 on local ext4 under WSL2. Other Python/Git versions, Windows, macOS and network filesystems are unverified. There are no Python runtime dependencies. Install into a dedicated virtual environment with its `bin/python`; the POSIX launcher starts that interpreter with bytecode writing disabled before startup. System/user-prefix installs without that interpreter are unsupported. Git must be a trusted executable on your PATH and repository configuration must stay cooperative and stable for the scan.
+The acceptance target is CPython 3.11, Git 2.43.0 and Linux x86_64 on local ext4 under WSL2. Other Python/Git versions, Windows, macOS and network filesystems are unverified. There are no Python runtime dependencies. Install into a dedicated virtual environment with its `bin/python`; the POSIX launcher starts that interpreter with isolated imports and bytecode writing disabled before startup. System/user-prefix installs without that interpreter are unsupported. Git must be a trusted executable on your PATH and repository configuration must stay cooperative and stable for the scan.
 
 The command refuses bare repositories, configured content filters, included repository config, submodules/gitlinks, sparse checkout/index, split index and partial/promisor clones. See the [behavior contract](specs/worktree-reporting-core-spec.md) for exact limits and the [runbook](docs/runbooks/worktree-reporting.md) for operational boundaries.
 
@@ -20,7 +20,9 @@ Use a checksum-pinned pip as a separate installer, without relying on the Python
 set -euo pipefail
 test ! -e .venv
 test ! -e .installer
-sha256sum --check --strict --ignore-missing SHA256SUMS
+WHEEL_CHECKSUM="$(awk '$2 == "orion_worktree_report-0.1.0-py3-none-any.whl" {print}' SHA256SUMS)"
+test "$(printf '%s\n' "$WHEEL_CHECKSUM" | wc -l)" -eq 1
+printf '%s\n' "$WHEEL_CHECKSUM" | sha256sum --check --strict -
 curl --fail --location --proto '=https' --tlsv1.2 --max-time 60 \
   https://files.pythonhosted.org/packages/f3/6e/1736e5b4ae2b778ef2f81c47d797de9f891d4d8acb047a24ca37a60294dd/pip-26.2.1-py3-none-any.whl \
   --output pip-26.2.1-py3-none-any.whl

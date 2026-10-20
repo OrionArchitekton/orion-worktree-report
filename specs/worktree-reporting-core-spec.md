@@ -43,7 +43,7 @@ Default text and `--json` convey the same coverage, conclusion and problems. Tex
 
 ## Selection, observation and supported repositories
 
-Install into a dedicated virtual environment with its own `bin/python`. The POSIX command launcher starts that interpreter with bytecode writing disabled before startup; system/user-prefix installs without that interpreter are unsupported. The initial proof target is CPython 3.11, Linux x86_64, local ext4 and Git 2.43.0. Git older than 2.43 is unsupported. Other versions/platforms remain unverified until entered into the release's actual acceptance matrix; the wheel's generic Python tag does not establish Windows/macOS or network-filesystem support.
+Install into a dedicated virtual environment with its own `bin/python`. The POSIX command launcher starts that interpreter with isolated imports and bytecode writing disabled before startup; caller working directories and Python import-path environment settings cannot shadow the installed reporter. System/user-prefix installs without that interpreter are unsupported. The initial proof target is CPython 3.11, Linux x86_64, local ext4 and Git 2.43.0. Git older than 2.43 is unsupported. Other versions/platforms remain unverified until entered into the release's actual acceptance matrix; the wheel's generic Python tag does not establish Windows/macOS or network-filesystem support.
 
 Use Git's NUL-delimited registered-worktree output, rather than a guessed directory depth. Include locked and missing/prunable registrations in coverage. Do not prune or repair them. Reject bare selections as unsupported; a normal checkout with an unborn branch can be observed and must identify its unborn HEAD explicitly. Detached HEAD is a valid observation, not a failed branch lookup.
 
