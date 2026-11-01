@@ -1,5 +1,7 @@
 # Orion Worktree Report
 
+Part of [Cosmocrat OS](https://www.cosmocrat.ai/tools#orion-worktree-report).
+
 Observe registered Git worktrees and exact uncommitted path overlaps in explicitly selected local repositories. Reports carry coverage and uncertainty. They grant no task ownership or permission to change files.
 
 v0.1.0. MIT; retained ECC acknowledgment and license are in [NOTICE](NOTICE).
